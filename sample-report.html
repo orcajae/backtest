@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample report: 200-day average on SPY</title>
+<meta name="description" content="A full sample backtest report: the 200-day moving average rule on SPY, January 2000 to November 2026, with costs, sensitivity and split periods.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400..600&family=Libre+Franklin:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#f8f8f8; --ink:#0a0a0a; --muted:#5f5f5f; --line:#dcdcdc; --accent:#1f6b3a; }
+*{box-sizing:border-box} html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Libre Franklin",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+main{width:min(100% - 48px,760px);margin:0 auto;padding:72px 0 96px}
+h1{font:400 44px/1.1 "Source Serif 4",Georgia,serif;letter-spacing:-.02em;margin:8px 0 16px}
+h2{font:400 26px/1.25 "Source Serif 4",Georgia,serif;margin:56px 0 12px;break-after:avoid}
+.meta{color:var(--muted);margin:0} a{color:var(--accent)}
+.top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:10px 20px;font-weight:500}
+table{width:100%;border-collapse:collapse;margin:8px 0 0;font-size:15px;break-inside:auto}
+th,td{text-align:right;padding:7px 0;border-bottom:1px solid var(--line);font-weight:400}
+th:first-child,td:first-child{text-align:left} thead th{font-size:13px;color:var(--muted);font-weight:500}
+.find{border-left:3px solid var(--accent);padding:4px 0 4px 16px;margin:16px 0}
+.find p{margin:0}
+svg{width:100%;height:auto;display:block;margin-top:12px}
+.key{display:flex;gap:24px;font-size:14px;color:var(--muted)} .key i{display:inline-block;width:16px;height:2px;vertical-align:middle;margin-right:8px;background:var(--accent)} .key i.h{background:#a6a6a6}
+ul{padding-left:20px} li{margin:4px 0}
+.cols{columns:2;column-gap:40px} .cols table{break-inside:avoid}
+.rules td{text-align:left!important} .rules td:first-child{width:28%;color:var(--muted)}
+@media (max-width:640px){ h1{font-size:34px} .cols{columns:1} }
+@media print{ body{background:#fff;font-size:11pt} main{width:auto;padding:0} .noprint{display:none} h2{margin-top:28px} @page{margin:16mm} }
+</style>
+</head>
+<body><main>
+<div class="top noprint"><a href="index.html">Back to the service</a><a class="btn" href="sample-report.pdf" download>Download the PDF</a></div>
+<p class="meta" style="margin-top:32px">Sample report · Quick backtest + stress test · prepared by Jay Kim</p>
+<h1>200-day average on SPY</h1>
+<p class="meta">Daily data, 3 January 2000 to 13 November 2026. Prices adjusted for dividends and splits (Yahoo Finance). This is a public textbook rule, used here to show what a report contains. It is not a recommendation.</p>
+
+<h2>The rules as tested</h2>
+<table class="rules"><tbody>
+<tr><td>Buy</td><td>SPY closes above its 200-day simple average</td></tr>
+<tr><td>Sell to cash</td><td>SPY closes below its 200-day simple average</td></tr>
+<tr><td>Execution</td><td>Position changes from the next day; a signal never trades on its own bar</td></tr>
+<tr><td>Costs</td><td>0.05% of the trade on every buy and every sell</td></tr>
+<tr><td>Cash</td><td>Earns nothing while out of the market</td></tr>
+</tbody></table>
+
+<h2>Result against buy and hold</h2>
+<svg viewBox="0 0 560 220" preserveAspectRatio="none" aria-label="Growth of 1 dollar: the rule ends at 5.00, buy and hold at 8.22.">
+<path d="M0.0 205.8 L1.7 206.2 L3.5 203.7 L5.2 204.7 L6.9 205.1 L8.7 204.6 L10.4 205.0 L12.2 203.3 L13.9 204.8 L15.6 204.9 L17.4 207.0 L19.1 207.1 L20.8 206.0 L22.6 208.4 L24.3 209.7 L26.0 207.9 L27.8 208.0 L29.5 208.6 L31.2 208.8 L33.0 210.2 L34.7 211.9 L36.5 211.7 L38.2 210.1 L39.9 210.0 L41.7 210.2 L43.4 210.6 L45.1 209.9 L46.9 211.1 L48.6 211.3 L50.3 212.8 L52.1 214.3 L53.8 214.1 L55.6 216.0 L57.3 214.7 L59.0 213.6 L60.8 214.7 L62.5 215.1 L64.2 215.3 L66.0 215.3 L67.7 213.9 L69.4 212.9 L71.2 212.7 L72.9 212.4 L74.6 212.0 L76.4 212.2 L78.1 211.1 L79.9 210.9 L81.6 209.9 L83.3 209.4 L85.1 209.1 L86.8 209.4 L88.5 209.9 L90.3 209.5 L92.0 209.1 L93.7 209.8 L95.5 209.7 L97.2 209.5 L99.0 209.2 L100.7 208.2 L102.4 207.5 L104.2 208.1 L105.9 207.6 L107.6 208.0 L109.4 208.5 L111.1 207.7 L112.8 207.7 L114.6 206.8 L116.3 207.0 L118.0 206.8 L119.8 207.4 L121.5 206.3 L123.3 206.4 L125.0 205.8 L126.7 205.6 L128.5 205.2 L130.2 204.8 L131.9 205.6 L133.7 205.6 L135.4 205.5 L137.1 204.9 L138.9 204.2 L140.6 203.3 L142.4 202.7 L144.1 202.3 L145.8 201.9 L147.6 202.5 L149.3 202.1 L151.0 200.8 L152.8 199.8 L154.5 200.2 L156.2 201.2 L158.0 200.8 L159.7 199.6 L161.5 199.2 L163.2 200.5 L164.9 200.8 L166.7 202.7 L168.4 203.4 L170.1 203.7 L171.9 202.4 L173.6 201.9 L175.3 204.4 L177.1 204.7 L178.8 204.2 L180.5 206.8 L182.3 210.9 L184.0 212.4 L185.8 212.2 L187.5 213.8 L189.2 215.7 L191.0 214.4 L192.7 212.7 L194.4 211.5 L196.2 211.6 L197.9 210.1 L199.6 209.3 L201.4 208.5 L203.1 208.9 L204.9 207.5 L206.6 207.0 L208.3 207.9 L210.1 207.2 L211.8 205.7 L213.5 205.3 L215.3 207.4 L217.0 208.7 L218.7 207.1 L220.5 208.2 L222.2 206.1 L223.9 205.1 L225.7 205.1 L227.4 203.3 L229.2 202.7 L230.9 201.7 L232.6 201.7 L234.4 200.8 L236.1 201.1 L237.8 201.7 L239.6 202.3 L241.3 203.9 L243.0 205.8 L244.8 203.0 L246.5 203.1 L248.3 202.8 L250.0 201.4 L251.7 200.1 L253.5 199.1 L255.2 199.3 L256.9 201.3 L258.7 200.0 L260.4 199.7 L262.1 198.9 L263.9 198.0 L265.6 198.6 L267.3 198.5 L269.1 198.2 L270.8 196.4 L272.6 196.0 L274.3 194.6 L276.0 193.9 L277.8 193.0 L279.5 193.5 L281.2 191.6 L283.0 192.8 L284.7 191.5 L286.4 189.7 L288.2 188.4 L289.9 187.3 L291.7 188.9 L293.4 186.9 L295.1 186.5 L296.9 186.2 L298.6 185.2 L300.3 184.2 L302.1 184.9 L303.8 183.0 L305.5 183.7 L307.3 182.6 L309.0 181.2 L310.7 181.3 L312.5 182.8 L314.2 180.1 L316.0 180.9 L317.7 180.4 L319.4 179.7 L321.2 180.8 L322.9 179.6 L324.6 182.8 L326.4 184.1 L328.1 180.0 L329.8 179.8 L331.6 180.7 L333.3 183.2 L335.1 183.3 L336.8 180.0 L338.5 179.8 L340.3 178.9 L342.0 178.8 L343.7 176.8 L345.5 176.8 L347.2 176.8 L348.9 177.7 L350.7 175.7 L352.4 174.6 L354.1 173.6 L355.9 171.3 L357.6 171.2 L359.4 170.6 L361.1 169.7 L362.8 169.4 L364.6 168.1 L366.3 167.9 L368.0 166.6 L369.8 165.1 L371.5 163.0 L373.2 162.2 L375.0 158.3 L376.7 160.9 L378.5 162.9 L380.2 162.5 L381.9 160.8 L383.7 160.4 L385.4 157.8 L387.1 155.4 L388.9 155.0 L390.6 160.3 L392.3 158.9 L394.1 165.4 L395.8 160.0 L397.5 157.7 L399.3 156.4 L401.0 153.3 L402.8 158.3 L404.5 153.2 L406.2 152.0 L408.0 153.3 L409.7 151.8 L411.4 150.0 L413.2 147.1 L414.9 144.6 L416.6 144.7 L418.4 151.6 L420.1 161.6 L421.9 152.7 L423.6 148.9 L425.3 147.4 L427.1 142.5 L428.8 136.2 L430.5 139.8 L432.3 142.1 L434.0 132.4 L435.7 128.7 L437.5 129.7 L439.2 126.9 L441.0 122.1 L442.7 116.3 L444.4 115.5 L446.2 113.0 L447.9 110.1 L449.6 106.4 L451.4 112.3 L453.1 103.9 L454.8 104.9 L456.6 99.0 L458.3 106.0 L460.0 109.8 L461.8 105.2 L463.5 116.3 L465.3 116.0 L467.0 125.5 L468.7 115.8 L470.5 120.5 L472.2 130.8 L473.9 122.6 L475.7 116.5 L477.4 123.2 L479.1 116.3 L480.9 119.2 L482.6 115.1 L484.4 113.2 L486.1 112.7 L487.8 104.9 L489.6 100.8 L491.3 102.9 L493.0 109.0 L494.8 111.7 L496.5 100.7 L498.2 94.8 L500.0 92.6 L501.7 85.3 L503.4 80.5 L505.2 86.6 L506.9 79.3 L508.7 73.9 L510.4 72.0 L512.1 68.2 L513.9 64.8 L515.6 66.3 L517.3 56.4 L519.1 60.6 L520.8 56.1 L522.5 58.3 L524.3 67.9 L526.0 69.4 L527.8 59.2 L529.5 50.3 L531.2 46.1 L533.0 42.3 L534.7 35.6 L536.4 30.9 L538.2 30.5 L539.9 30.3 L541.6 27.4 L543.4 29.1 L545.1 39.1 L546.8 18.9 L548.6 7.7 L550.3 10.0 L552.1 9.9 L553.8 4.0 L555.5 4.7 L557.3 6.8 L559.0 7.2" fill="none" stroke="#a6a6a6" stroke-width="1.5"/><path d="M0.0 205.8 L1.7 206.9 L3.5 204.5 L5.2 206.4 L6.9 208.5 L8.7 208.1 L10.4 208.6 L12.2 207.1 L13.9 209.1 L15.6 209.1 L17.4 209.1 L19.1 209.1 L20.8 209.1 L22.6 209.1 L24.3 209.1 L26.0 209.1 L27.8 209.1 L29.5 209.1 L31.2 209.1 L33.0 209.1 L34.7 209.1 L36.5 209.1 L38.2 209.1 L39.9 209.1 L41.7 209.3 L43.4 209.3 L45.1 209.7 L46.9 210.6 L48.6 210.6 L50.3 210.6 L52.1 210.6 L53.8 210.6 L55.6 210.6 L57.3 210.6 L59.0 210.6 L60.8 210.6 L62.5 210.6 L64.2 210.6 L66.0 211.3 L67.7 211.0 L69.4 209.9 L71.2 209.6 L72.9 209.2 L74.6 208.8 L76.4 209.0 L78.1 207.8 L79.9 207.5 L81.6 206.3 L83.3 205.8 L85.1 205.5 L86.8 205.8 L88.5 206.3 L90.3 205.9 L92.0 205.4 L93.7 206.5 L95.5 206.8 L97.2 207.0 L99.0 207.2 L100.7 206.1 L102.4 205.3 L104.2 205.9 L105.9 205.4 L107.6 205.9 L109.4 207.5 L111.1 206.7 L112.8 206.7 L114.6 205.8 L116.3 206.0 L118.0 205.8 L119.8 207.6 L121.5 206.6 L123.3 206.6 L125.0 206.0 L126.7 205.9 L128.5 205.5 L130.2 205.1 L131.9 205.9 L133.7 206.6 L135.4 207.1 L137.1 206.6 L138.9 205.9 L140.6 205.1 L142.4 204.6 L144.1 204.2 L145.8 203.8 L147.6 204.4 L149.3 204.1 L151.0 202.8 L152.8 201.8 L154.5 202.3 L156.2 203.2 L158.0 204.4 L159.7 203.3 L161.5 202.9 L163.2 204.8 L164.9 205.8 L166.7 205.8 L168.4 205.8 L170.1 205.8 L171.9 205.8 L173.6 206.8 L175.3 206.8 L177.1 206.8 L178.8 206.8 L180.5 206.8 L182.3 206.8 L184.0 206.8 L185.8 206.8 L187.5 206.8 L189.2 206.8 L191.0 206.8 L192.7 206.8 L194.4 206.8 L196.2 206.8 L197.9 205.0 L199.6 204.0 L201.4 203.0 L203.1 203.5 L204.9 201.8 L206.6 201.2 L208.3 202.3 L210.1 201.4 L211.8 199.6 L213.5 199.1 L215.3 202.6 L217.0 204.1 L218.7 204.4 L220.5 205.3 L222.2 204.5 L223.9 203.5 L225.7 203.5 L227.4 201.6 L229.2 200.9 L230.9 199.8 L232.6 199.8 L234.4 198.9 L236.1 199.2 L237.8 199.8 L239.6 200.4 L241.3 201.4 L243.0 201.4 L244.8 202.1 L246.5 203.6 L248.3 204.5 L250.0 203.2 L251.7 202.0 L253.5 201.1 L255.2 201.2 L256.9 203.1 L258.7 201.9 L260.4 201.6 L262.1 200.8 L263.9 200.0 L265.6 200.6 L267.3 201.2 L269.1 200.9 L270.8 199.3 L272.6 198.9 L274.3 197.7 L276.0 197.0 L277.8 196.2 L279.5 196.7 L281.2 194.8 L283.0 195.9 L284.7 194.8 L286.4 193.1 L288.2 192.0 L289.9 190.9 L291.7 192.4 L293.4 190.6 L295.1 190.2 L296.9 190.0 L298.6 189.0 L300.3 188.1 L302.1 188.7 L303.8 187.0 L305.5 187.6 L307.3 187.3 L309.0 186.1 L310.7 186.2 L312.5 187.5 L314.2 185.0 L316.0 185.8 L317.7 185.3 L319.4 184.7 L321.2 185.7 L322.9 184.7 L324.6 186.1 L326.4 186.1 L328.1 185.6 L329.8 185.6 L331.6 188.3 L333.3 188.4 L335.1 188.4 L336.8 187.6 L338.5 187.4 L340.3 186.7 L342.0 187.3 L343.7 185.7 L345.5 185.7 L347.2 185.7 L348.9 186.5 L350.7 184.8 L352.4 183.8 L354.1 183.0 L355.9 181.1 L357.6 181.0 L359.4 180.5 L361.1 179.8 L362.8 179.4 L364.6 178.4 L366.3 178.2 L368.0 177.1 L369.8 175.9 L371.5 174.1 L373.2 173.5 L375.0 170.1 L376.7 172.4 L378.5 174.0 L380.2 173.7 L381.9 172.3 L383.7 172.0 L385.4 169.8 L387.1 167.8 L388.9 167.4 L390.6 172.1 L392.3 172.9 L394.1 174.1 L395.8 174.1 L397.5 173.6 L399.3 172.6 L401.0 170.2 L402.8 174.1 L404.5 171.3 L406.2 170.4 L408.0 171.4 L409.7 170.2 L411.4 168.9 L413.2 166.6 L414.9 164.7 L416.6 164.7 L418.4 169.8 L420.1 173.7 L421.9 173.7 L423.6 172.7 L425.3 171.6 L427.1 168.1 L428.8 163.7 L430.5 166.2 L432.3 167.9 L434.0 160.9 L435.7 158.3 L437.5 159.1 L439.2 157.0 L441.0 153.6 L442.7 149.5 L444.4 149.0 L446.2 147.1 L447.9 145.0 L449.6 142.5 L451.4 146.6 L453.1 140.6 L454.8 141.4 L456.6 137.2 L458.3 144.2 L460.0 147.9 L461.8 146.6 L463.5 148.9 L465.3 148.9 L467.0 148.9 L468.7 148.9 L470.5 149.6 L472.2 149.6 L473.9 149.6 L475.7 149.6 L477.4 151.9 L479.1 150.7 L480.9 152.7 L482.6 152.6 L484.4 151.3 L486.1 150.9 L487.8 145.7 L489.6 142.9 L491.3 144.3 L493.0 148.5 L494.8 150.4 L496.5 144.0 L498.2 140.0 L500.0 138.5 L501.7 133.7 L503.4 130.5 L505.2 134.5 L506.9 129.6 L508.7 126.0 L510.4 124.7 L512.1 122.2 L513.9 119.9 L515.6 120.9 L517.3 114.3 L519.1 117.2 L520.8 114.1 L522.5 115.6 L524.3 123.4 L526.0 123.4 L527.8 122.2 L529.5 116.6 L531.2 113.9 L533.0 111.5 L534.7 107.2 L536.4 104.3 L538.2 104.0 L539.9 103.9 L541.6 102.0 L543.4 103.1 L545.1 109.9 L546.8 102.3 L548.6 95.5 L550.3 96.9 L552.1 96.8 L553.8 93.2 L555.5 93.7 L557.3 94.9 L559.0 95.2" fill="none" stroke="#1f6b3a" stroke-width="2"/></svg>
+<div class="key"><span><i></i>Rule: $1 to $5.00</span><span><i class="h"></i>Buy and hold: $1 to $8.22</span></div>
+<table><thead><tr><th></th><th>Rule</th><th>Buy and hold</th></tr></thead><tbody>
+<tr><td>Return a year (CAGR)</td><td>6.2%</td><td>8.2%</td></tr>
+<tr><td>Worst fall from a peak</td><td>&minus;28.5%</td><td>&minus;55.2%</td></tr>
+<tr><td>Sharpe ratio (daily, no risk-free rate)</td><td>0.58</td><td>0.50</td></tr>
+<tr><td>Longest time below a previous peak</td><td>1715 trading days</td><td>1656 trading days</td></tr>
+<tr><td>Trades (buys and sells)</td><td>184</td><td>1</td></tr>
+<tr><td>Time in the market</td><td>74.5%</td><td>100%</td></tr>
+<tr><td>Costs paid, summed</td><td>9.2% of capital</td><td>&mdash;</td></tr>
+</tbody></table>
+
+<h2>Findings</h2>
+<div class="find"><p><b>1. It cut the worst fall roughly in half</b> (&minus;28.5% against &minus;55.2%). In 2008 the rule returned &minus;4.1% while buy and hold returned &minus;36.8%.</p></div>
+<div class="find"><p><b>2. It gave up about 2 points of return a year</b> and beat buy and hold in only 5 of 27 calendar years. It lagged most in fast rebounds: in 2020 it made 9.6% against 18.3%.</p></div>
+<div class="find"><p><b>3. The result depends on the number 200.</b> At 100 days the protection disappears (worst fall &minus;51.6%). A rule whose edge moves this much with one setting needs a reason for its setting before it is trusted.</p></div>
+<div class="find"><p><b>4. Signals cluster in sideways markets.</b> In March 2025 it switched three times in 16 days; each switch costs money and the cost compounds.</p></div>
+
+<h2>Stress test: change the length</h2>
+<table><thead><tr><th>Average</th><th>Return a year</th><th>Worst fall</th><th>Sharpe</th><th>Trades</th></tr></thead><tbody><tr><td>100 days</td><td>4.3%</td><td>&minus;51.6%</td><td>0.43</td><td>303</td></tr><tr><td>125 days</td><td>3.2%</td><td>&minus;47.7%</td><td>0.33</td><td>302</td></tr><tr><td>150 days</td><td>5.2%</td><td>&minus;34.3%</td><td>0.50</td><td>252</td></tr><tr><td>175 days</td><td>5.4%</td><td>&minus;33.1%</td><td>0.52</td><td>222</td></tr><tr><td>200 days</td><td>6.2%</td><td>&minus;28.5%</td><td>0.58</td><td>184</td></tr><tr><td>225 days</td><td>6.2%</td><td>&minus;24.1%</td><td>0.57</td><td>182</td></tr><tr><td>250 days</td><td>6.5%</td><td>&minus;23.9%</td><td>0.59</td><td>150</td></tr><tr><td>275 days</td><td>7.1%</td><td>&minus;25.2%</td><td>0.63</td><td>107</td></tr><tr><td>300 days</td><td>8.3%</td><td>&minus;22.9%</td><td>0.72</td><td>83</td></tr></tbody></table>
+
+<h2>Stress test: split the period</h2>
+<table><thead><tr><th>Return a year</th><th>Rule</th><th>Buy and hold</th></tr></thead><tbody>
+<tr><td>2000 to 2012</td><td>0.9%</td><td>1.6%</td></tr>
+<tr><td>2013 to Nov 2026</td><td>11.4%</td><td>14.7%</td></tr>
+</tbody></table>
+<p class="meta">Behind in both halves. What the rule buys is smaller falls, not more return.</p>
+
+<h2>Year by year</h2>
+<div class="cols"><table><thead><tr><th>Year</th><th>Rule</th><th>Buy and hold</th></tr></thead><tbody><tr><td>2000</td><td>&minus;17.0%</td><td>&minus;9.7%</td></tr><tr><td>2001</td><td>0.0%</td><td>&minus;11.8%</td></tr><tr><td>2002</td><td>&minus;6.7%</td><td>&minus;21.6%</td></tr><tr><td>2003</td><td>20.2%</td><td>28.2%</td></tr><tr><td>2004</td><td>3.8%</td><td>10.7%</td></tr><tr><td>2005</td><td>&minus;4.9%</td><td>4.8%</td></tr><tr><td>2006</td><td>9.6%</td><td>15.9%</td></tr><tr><td>2007</td><td>&minus;5.5%</td><td>5.2%</td></tr><tr><td>2008</td><td>&minus;4.1%</td><td>&minus;36.8%</td></tr><tr><td>2009</td><td>22.3%</td><td>26.4%</td></tr><tr><td>2010</td><td>&minus;1.2%</td><td>15.2%</td></tr><tr><td>2011</td><td>&minus;9.7%</td><td>1.9%</td></tr><tr><td>2012</td><td>13.2%</td><td>16.0%</td></tr><tr><td>2013</td><td>32.3%</td><td>32.3%</td></tr><tr><td>2014</td><td>11.6%</td><td>13.5%</td></tr><tr><td>2015</td><td>&minus;4.8%</td><td>1.2%</td></tr><tr><td>2016</td><td>10.4%</td><td>12.0%</td></tr><tr><td>2017</td><td>21.7%</td><td>21.7%</td></tr><tr><td>2018</td><td>&minus;1.2%</td><td>&minus;4.6%</td></tr><tr><td>2019</td><td>16.3%</td><td>31.2%</td></tr><tr><td>2020</td><td>9.6%</td><td>18.3%</td></tr><tr><td>2021</td><td>28.7%</td><td>28.7%</td></tr><tr><td>2022</td><td>&minus;15.5%</td><td>&minus;18.2%</td></tr><tr><td>2023</td><td>14.9%</td><td>26.2%</td></tr><tr><td>2024</td><td>24.9%</td><td>24.9%</td></tr><tr><td>2025</td><td>11.6%</td><td>17.7%</td></tr><tr><td>2026</td><td>6.9%</td><td>11.5%</td></tr></tbody></table></div>
+
+<h2>Limits of this report</h2>
+<ul>
+<li>Past prices only. Nothing here predicts future returns.</li>
+<li>Cash earns 0%. With interest on cash the rule would look somewhat better.</li>
+<li>Taxes, slippage beyond the stated cost, and borrowing are not modelled.</li>
+<li>One market. A rule that works on SPY may not work elsewhere.</li>
+</ul>
+<p class="meta" style="margin-top:40px">Prepared by Jay Kim · orcajae.github.io/backtest · Research only, not investment advice.</p>
+</main></body></html>
