@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en" data-type="service" data-radius="sharp" data-buttons="arrow" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jay Kim: backtests for your own trading rules</title>
+<meta name="description" content="Send your trading rules in plain English. A quant engineer codes them, runs them on real price history with costs, and reports where they break. From $99.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jay Kim: backtests for your own trading rules">
+<meta property="og:description" content="Your rules, coded and run on real price history with costs. Report in 5 days, from $99.">
+<meta property="og:image" content="share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f8f8f8">
+<!-- <link rel="canonical" href="https://[domain]/"> : no domain yet -->
+<meta name="site-kind" content="other">
+<meta name="page-type" content="service">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400..700&family=Libre+Franklin:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/backgrounds/backgrounds.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<link rel="stylesheet" href="assets/icons/icon.css">
+<style>
+:root {
+  --p-bg: #f8f8f8; --p-surface: #eeeeee; --p-ink: #0a0a0a; --p-muted: #6a6a6a;
+  --p-accent: #1f6b3a; --p-accent-ink: #ffffff; --p-action: #1f6b3a; --p-action-ink: #ffffff;
+  --p-inv-bg: #0a0a0a; --p-inv-surface: #171717; --p-inv-ink: #f8f8f8; --p-inv-muted: #939393;
+  --p-inv-accent: #1f6b3a; --p-inv-accent-ink: #ffffff; --p-inv-action: #1f6b3a; --p-inv-action-ink: #ffffff;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-text: "Libre Franklin", system-ui, sans-serif;
+  --display-weight: 400;
+  --display-tracking: -0.02em;
+  --display-tracking-xl: -0.026em;
+}
+</style>
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="assets/moments/moments.js">
+<link rel="modulepreload" href="assets/moments/lib.js">
+<link rel="modulepreload" href="assets/moments/pinned-chapters/moment.js">
+<!-- page CSS: only what sits inside a visual (the report window and its parts) -->
+<style>
+  .rep { background: var(--p-bg); border: 1px solid color-mix(in oklab, var(--p-ink) 14%, transparent); border-radius: var(--r-lg); display: flex; flex-direction: column; overflow: hidden; font-variant-numeric: tabular-nums; }
+  .rep__head { display: flex; justify-content: space-between; gap: 16px; padding: 16px 24px; border-bottom: 1px solid color-mix(in oklab, var(--p-ink) 12%, transparent); font-size: 14px; }
+  .rep__head b { font-weight: 500; }
+  .rep__body { padding: 24px; display: flex; flex-direction: column; gap: 24px; flex: 1; min-height: 0; }
+  .rep__chart { width: 100%; height: auto; display: block; }
+  .rep__chart .l-hold { fill: none; stroke: color-mix(in oklab, var(--p-ink) 35%, transparent); stroke-width: 1.5; }
+  .rep__chart .l-sma { fill: none; stroke: var(--p-accent); stroke-width: 2; }
+  .rep__key { display: flex; gap: 24px; font-size: 14px; color: var(--p-muted); }
+  .rep__key i { display: inline-block; width: 16px; height: 2px; vertical-align: middle; margin-right: 8px; background: var(--p-accent); }
+  .rep__key i.h { background: color-mix(in oklab, var(--p-ink) 35%, transparent); }
+  .rep table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  .rep th, .rep td { text-align: right; padding: 8px 0; border-bottom: 1px solid color-mix(in oklab, var(--p-ink) 10%, transparent); font-weight: 400; }
+  .rep th:first-child, .rep td:first-child { text-align: left; }
+  .rep thead th { font-size: 13px; color: var(--p-muted); font-weight: 500; }
+  .rep td.hi { color: var(--p-accent); font-weight: 500; }
+  .rep__rules { font-size: 16px; line-height: 1.6; margin: 0; }
+  .rep__rules dt { font-size: 13px; color: var(--p-muted); font-weight: 500; margin-top: 12px; }
+  .rep__rules dt:first-child { margin-top: 0; }
+  .rep__rules dd { margin: 0; }
+  .rep__note { font-size: 14px; color: var(--p-muted); margin: 0; }
+  .hero__media .rep { position: absolute; inset: 0; }
+  .split-bars { display: grid; gap: 16px; }
+  .split-bars__row { display: grid; grid-template-columns: 96px 1fr 56px; gap: 12px; align-items: center; font-size: 14px; }
+  .split-bars__bar { height: 12px; background: var(--p-accent); }
+  .split-bars__bar.h { background: color-mix(in oklab, var(--p-ink) 30%, transparent); }
+  .mo-pc__visual > .rep { height: 100%; }
+  .rows .rows__name small { display: block; font-weight: 400; color: var(--muted); font-size: var(--t-small); }
+  /* at rest (tablet, phone, no script) the step windows keep only their first rows, so three steps fit their screens */
+  [data-moment="pinned-chapters"]:not(.is-live) .rep__note,
+  [data-moment="pinned-chapters"]:not(.is-live) .rep tbody tr:nth-child(n+4),
+  [data-moment="pinned-chapters"]:not(.is-live) .rep__rules dt:nth-of-type(n+3),
+  [data-moment="pinned-chapters"]:not(.is-live) .rep__rules dd:nth-of-type(n+3) { display: none; }
+
+  @media (max-width: 639px) { .hero__media .rep table, .hero__media .ly-float { display: none; } .hero__media .rep__key { flex-direction: column; gap: 4px; } }
+  @media (max-width: 639px) { .rep__head { padding: 12px 16px; } .rep__body { padding: 16px; gap: 16px; } .rep table { font-size: 14px; } }
+</style>
+</head>
+<body>
+<!-- type: service
+     deal: hero split, nav nav-centre, close close-type (dealt close-photo; re-dealt: no photographs),
+     footer footer-columns (dealt footer-visit; re-dealt: no street address), rhythm surface-pairs,
+     buttons arrow, mark stack, palette mint-pink-accounts (an off-white report page and the green of a
+     rising equity line), type source-serif, radius sharp
+     moments: pinned-chapters in #process
+     plan: hero (1) / process (2, pinned-chapters, three report windows) / prices (1, surface) /
+           request (1, form + three answers) / footer.closing (1) -->
+<header class="nav nav--centre">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="#top"><span class="mark" data-mark="stack" aria-hidden="true"></span>Jay Kim</a>
+    <nav class="nav__links" aria-label="Main">
+      <div class="nav__item"><a class="nav__link" href="#process">Process</a></div>
+      <div class="nav__item"><a class="nav__link" href="#prices">Prices</a></div>
+      <div class="nav__item"><a class="nav__link" href="#request">Questions</a></div>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--primary" href="#request">Send your strategy</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero hero--split" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text grid hero__grid">
+      <div class="hero__text span-5">
+        <p class="hero__kicker"><span class="dot" aria-hidden="true"></span>First 3 requests run free</p>
+        <h1 id="hero-h">Backtests for your own trading rules</h1>
+        <p class="hero__lead">Write your strategy in plain English. I code it, run it on real price history with trading costs, and show where it breaks. From $99, report in 5 days.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="#request">Send your strategy<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+          <a class="btn btn--secondary" href="#process">See a sample report</a>
+        </div>
+      </div>
+      <div class="hero__media span-6 start-7">
+        <div class="rep" role="img" aria-label="Sample report: the 200-day average rule on SPY from 2000 to November 2026 grew 1 dollar to 5.00 against 8.22 for buy and hold, with a worst fall of 28.5 percent against 55.2 percent.">
+          <div class="rep__head"><b>200-day average on SPY</b><span>Jan 2000 to Nov 2026</span></div>
+          <div class="rep__body">
+            <svg class="rep__chart" viewBox="0 0 560 220" preserveAspectRatio="none" aria-hidden="true">
+              <path class="l-hold" d="M0.0 205.8 L1.7 206.2 L3.5 203.7 L5.2 204.7 L6.9 205.1 L8.7 204.6 L10.4 205.0 L12.2 203.3 L13.9 204.8 L15.6 204.9 L17.4 207.0 L19.1 207.1 L20.8 206.0 L22.6 208.4 L24.3 209.7 L26.0 207.9 L27.8 208.0 L29.5 208.6 L31.2 208.8 L33.0 210.2 L34.7 211.9 L36.5 211.7 L38.2 210.1 L39.9 210.0 L41.7 210.2 L43.4 210.6 L45.1 209.9 L46.9 211.1 L48.6 211.3 L50.3 212.8 L52.1 214.3 L53.8 214.1 L55.6 216.0 L57.3 214.7 L59.0 213.6 L60.8 214.7 L62.5 215.1 L64.2 215.3 L66.0 215.3 L67.7 213.9 L69.4 212.9 L71.2 212.7 L72.9 212.4 L74.6 212.0 L76.4 212.2 L78.1 211.1 L79.9 210.9 L81.6 209.9 L83.3 209.4 L85.1 209.1 L86.8 209.4 L88.5 209.9 L90.3 209.5 L92.0 209.1 L93.7 209.8 L95.5 209.7 L97.2 209.5 L99.0 209.2 L100.7 208.2 L102.4 207.5 L104.2 208.1 L105.9 207.6 L107.6 208.0 L109.4 208.5 L111.1 207.7 L112.8 207.7 L114.6 206.8 L116.3 207.0 L118.0 206.8 L119.8 207.4 L121.5 206.3 L123.3 206.4 L125.0 205.8 L126.7 205.6 L128.5 205.2 L130.2 204.8 L131.9 205.6 L133.7 205.6 L135.4 205.5 L137.1 204.9 L138.9 204.2 L140.6 203.3 L142.4 202.7 L144.1 202.3 L145.8 201.9 L147.6 202.5 L149.3 202.1 L151.0 200.8 L152.8 199.8 L154.5 200.2 L156.2 201.2 L158.0 200.8 L159.7 199.6 L161.5 199.2 L163.2 200.5 L164.9 200.8 L166.7 202.7 L168.4 203.4 L170.1 203.7 L171.9 202.4 L173.6 201.9 L175.3 204.4 L177.1 204.7 L178.8 204.2 L180.5 206.8 L182.3 210.9 L184.0 212.4 L185.8 212.2 L187.5 213.8 L189.2 215.7 L191.0 214.4 L192.7 212.7 L194.4 211.5 L196.2 211.6 L197.9 210.1 L199.6 209.3 L201.4 208.5 L203.1 208.9 L204.9 207.5 L206.6 207.0 L208.3 207.9 L210.1 207.2 L211.8 205.7 L213.5 205.3 L215.3 207.4 L217.0 208.7 L218.7 207.1 L220.5 208.2 L222.2 206.1 L223.9 205.1 L225.7 205.1 L227.4 203.3 L229.2 202.7 L230.9 201.7 L232.6 201.7 L234.4 200.8 L236.1 201.1 L237.8 201.7 L239.6 202.3 L241.3 203.9 L243.0 205.8 L244.8 203.0 L246.5 203.1 L248.3 202.8 L250.0 201.4 L251.7 200.1 L253.5 199.1 L255.2 199.3 L256.9 201.3 L258.7 200.0 L260.4 199.7 L262.1 198.9 L263.9 198.0 L265.6 198.6 L267.3 198.5 L269.1 198.2 L270.8 196.4 L272.6 196.0 L274.3 194.6 L276.0 193.9 L277.8 193.0 L279.5 193.5 L281.2 191.6 L283.0 192.8 L284.7 191.5 L286.4 189.7 L288.2 188.4 L289.9 187.3 L291.7 188.9 L293.4 186.9 L295.1 186.5 L296.9 186.2 L298.6 185.2 L300.3 184.2 L302.1 184.9 L303.8 183.0 L305.5 183.7 L307.3 182.6 L309.0 181.2 L310.7 181.3 L312.5 182.8 L314.2 180.1 L316.0 180.9 L317.7 180.4 L319.4 179.7 L321.2 180.8 L322.9 179.6 L324.6 182.8 L326.4 184.1 L328.1 180.0 L329.8 179.8 L331.6 180.7 L333.3 183.2 L335.1 183.3 L336.8 180.0 L338.5 179.8 L340.3 178.9 L342.0 178.8 L343.7 176.8 L345.5 176.8 L347.2 176.8 L348.9 177.7 L350.7 175.7 L352.4 174.6 L354.1 173.6 L355.9 171.3 L357.6 171.2 L359.4 170.6 L361.1 169.7 L362.8 169.4 L364.6 168.1 L366.3 167.9 L368.0 166.6 L369.8 165.1 L371.5 163.0 L373.2 162.2 L375.0 158.3 L376.7 160.9 L378.5 162.9 L380.2 162.5 L381.9 160.8 L383.7 160.4 L385.4 157.8 L387.1 155.4 L388.9 155.0 L390.6 160.3 L392.3 158.9 L394.1 165.4 L395.8 160.0 L397.5 157.7 L399.3 156.4 L401.0 153.3 L402.8 158.3 L404.5 153.2 L406.2 152.0 L408.0 153.3 L409.7 151.8 L411.4 150.0 L413.2 147.1 L414.9 144.6 L416.6 144.7 L418.4 151.6 L420.1 161.6 L421.9 152.7 L423.6 148.9 L425.3 147.4 L427.1 142.5 L428.8 136.2 L430.5 139.8 L432.3 142.1 L434.0 132.4 L435.7 128.7 L437.5 129.7 L439.2 126.9 L441.0 122.1 L442.7 116.3 L444.4 115.5 L446.2 113.0 L447.9 110.1 L449.6 106.4 L451.4 112.3 L453.1 103.9 L454.8 104.9 L456.6 99.0 L458.3 106.0 L460.0 109.8 L461.8 105.2 L463.5 116.3 L465.3 116.0 L467.0 125.5 L468.7 115.8 L470.5 120.5 L472.2 130.8 L473.9 122.6 L475.7 116.5 L477.4 123.2 L479.1 116.3 L480.9 119.2 L482.6 115.1 L484.4 113.2 L486.1 112.7 L487.8 104.9 L489.6 100.8 L491.3 102.9 L493.0 109.0 L494.8 111.7 L496.5 100.7 L498.2 94.8 L500.0 92.6 L501.7 85.3 L503.4 80.5 L505.2 86.6 L506.9 79.3 L508.7 73.9 L510.4 72.0 L512.1 68.2 L513.9 64.8 L515.6 66.3 L517.3 56.4 L519.1 60.6 L520.8 56.1 L522.5 58.3 L524.3 67.9 L526.0 69.4 L527.8 59.2 L529.5 50.3 L531.2 46.1 L533.0 42.3 L534.7 35.6 L536.4 30.9 L538.2 30.5 L539.9 30.3 L541.6 27.4 L543.4 29.1 L545.1 39.1 L546.8 18.9 L548.6 7.7 L550.3 10.0 L552.1 9.9 L553.8 4.0 L555.5 4.7 L557.3 6.8 L559.0 7.2"/>
+              <path class="l-sma" d="M0.0 205.8 L1.7 206.9 L3.5 204.5 L5.2 206.4 L6.9 208.5 L8.7 208.1 L10.4 208.6 L12.2 207.1 L13.9 209.1 L15.6 209.1 L17.4 209.1 L19.1 209.1 L20.8 209.1 L22.6 209.1 L24.3 209.1 L26.0 209.1 L27.8 209.1 L29.5 209.1 L31.2 209.1 L33.0 209.1 L34.7 209.1 L36.5 209.1 L38.2 209.1 L39.9 209.1 L41.7 209.3 L43.4 209.3 L45.1 209.7 L46.9 210.6 L48.6 210.6 L50.3 210.6 L52.1 210.6 L53.8 210.6 L55.6 210.6 L57.3 210.6 L59.0 210.6 L60.8 210.6 L62.5 210.6 L64.2 210.6 L66.0 211.3 L67.7 211.0 L69.4 209.9 L71.2 209.6 L72.9 209.2 L74.6 208.8 L76.4 209.0 L78.1 207.8 L79.9 207.5 L81.6 206.3 L83.3 205.8 L85.1 205.5 L86.8 205.8 L88.5 206.3 L90.3 205.9 L92.0 205.4 L93.7 206.5 L95.5 206.8 L97.2 207.0 L99.0 207.2 L100.7 206.1 L102.4 205.3 L104.2 205.9 L105.9 205.4 L107.6 205.9 L109.4 207.5 L111.1 206.7 L112.8 206.7 L114.6 205.8 L116.3 206.0 L118.0 205.8 L119.8 207.6 L121.5 206.6 L123.3 206.6 L125.0 206.0 L126.7 205.9 L128.5 205.5 L130.2 205.1 L131.9 205.9 L133.7 206.6 L135.4 207.1 L137.1 206.6 L138.9 205.9 L140.6 205.1 L142.4 204.6 L144.1 204.2 L145.8 203.8 L147.6 204.4 L149.3 204.1 L151.0 202.8 L152.8 201.8 L154.5 202.3 L156.2 203.2 L158.0 204.4 L159.7 203.3 L161.5 202.9 L163.2 204.8 L164.9 205.8 L166.7 205.8 L168.4 205.8 L170.1 205.8 L171.9 205.8 L173.6 206.8 L175.3 206.8 L177.1 206.8 L178.8 206.8 L180.5 206.8 L182.3 206.8 L184.0 206.8 L185.8 206.8 L187.5 206.8 L189.2 206.8 L191.0 206.8 L192.7 206.8 L194.4 206.8 L196.2 206.8 L197.9 205.0 L199.6 204.0 L201.4 203.0 L203.1 203.5 L204.9 201.8 L206.6 201.2 L208.3 202.3 L210.1 201.4 L211.8 199.6 L213.5 199.1 L215.3 202.6 L217.0 204.1 L218.7 204.4 L220.5 205.3 L222.2 204.5 L223.9 203.5 L225.7 203.5 L227.4 201.6 L229.2 200.9 L230.9 199.8 L232.6 199.8 L234.4 198.9 L236.1 199.2 L237.8 199.8 L239.6 200.4 L241.3 201.4 L243.0 201.4 L244.8 202.1 L246.5 203.6 L248.3 204.5 L250.0 203.2 L251.7 202.0 L253.5 201.1 L255.2 201.2 L256.9 203.1 L258.7 201.9 L260.4 201.6 L262.1 200.8 L263.9 200.0 L265.6 200.6 L267.3 201.2 L269.1 200.9 L270.8 199.3 L272.6 198.9 L274.3 197.7 L276.0 197.0 L277.8 196.2 L279.5 196.7 L281.2 194.8 L283.0 195.9 L284.7 194.8 L286.4 193.1 L288.2 192.0 L289.9 190.9 L291.7 192.4 L293.4 190.6 L295.1 190.2 L296.9 190.0 L298.6 189.0 L300.3 188.1 L302.1 188.7 L303.8 187.0 L305.5 187.6 L307.3 187.3 L309.0 186.1 L310.7 186.2 L312.5 187.5 L314.2 185.0 L316.0 185.8 L317.7 185.3 L319.4 184.7 L321.2 185.7 L322.9 184.7 L324.6 186.1 L326.4 186.1 L328.1 185.6 L329.8 185.6 L331.6 188.3 L333.3 188.4 L335.1 188.4 L336.8 187.6 L338.5 187.4 L340.3 186.7 L342.0 187.3 L343.7 185.7 L345.5 185.7 L347.2 185.7 L348.9 186.5 L350.7 184.8 L352.4 183.8 L354.1 183.0 L355.9 181.1 L357.6 181.0 L359.4 180.5 L361.1 179.8 L362.8 179.4 L364.6 178.4 L366.3 178.2 L368.0 177.1 L369.8 175.9 L371.5 174.1 L373.2 173.5 L375.0 170.1 L376.7 172.4 L378.5 174.0 L380.2 173.7 L381.9 172.3 L383.7 172.0 L385.4 169.8 L387.1 167.8 L388.9 167.4 L390.6 172.1 L392.3 172.9 L394.1 174.1 L395.8 174.1 L397.5 173.6 L399.3 172.6 L401.0 170.2 L402.8 174.1 L404.5 171.3 L406.2 170.4 L408.0 171.4 L409.7 170.2 L411.4 168.9 L413.2 166.6 L414.9 164.7 L416.6 164.7 L418.4 169.8 L420.1 173.7 L421.9 173.7 L423.6 172.7 L425.3 171.6 L427.1 168.1 L428.8 163.7 L430.5 166.2 L432.3 167.9 L434.0 160.9 L435.7 158.3 L437.5 159.1 L439.2 157.0 L441.0 153.6 L442.7 149.5 L444.4 149.0 L446.2 147.1 L447.9 145.0 L449.6 142.5 L451.4 146.6 L453.1 140.6 L454.8 141.4 L456.6 137.2 L458.3 144.2 L460.0 147.9 L461.8 146.6 L463.5 148.9 L465.3 148.9 L467.0 148.9 L468.7 148.9 L470.5 149.6 L472.2 149.6 L473.9 149.6 L475.7 149.6 L477.4 151.9 L479.1 150.7 L480.9 152.7 L482.6 152.6 L484.4 151.3 L486.1 150.9 L487.8 145.7 L489.6 142.9 L491.3 144.3 L493.0 148.5 L494.8 150.4 L496.5 144.0 L498.2 140.0 L500.0 138.5 L501.7 133.7 L503.4 130.5 L505.2 134.5 L506.9 129.6 L508.7 126.0 L510.4 124.7 L512.1 122.2 L513.9 119.9 L515.6 120.9 L517.3 114.3 L519.1 117.2 L520.8 114.1 L522.5 115.6 L524.3 123.4 L526.0 123.4 L527.8 122.2 L529.5 116.6 L531.2 113.9 L533.0 111.5 L534.7 107.2 L536.4 104.3 L538.2 104.0 L539.9 103.9 L541.6 102.0 L543.4 103.1 L545.1 109.9 L546.8 102.3 L548.6 95.5 L550.3 96.9 L552.1 96.8 L553.8 93.2 L555.5 93.7 L557.3 94.9 L559.0 95.2"/>
+            </svg>
+            <div class="rep__key"><span><i></i>Your rule: $1 to $5.00</span><span><i class="h"></i>Buy and hold: $1 to $8.22</span></div>
+            <table>
+              <thead><tr><th></th><th>Your rule</th><th>Buy and hold</th></tr></thead>
+              <tbody>
+                <tr><td>Return a year</td><td>6.2%</td><td>8.2%</td></tr>
+                <tr><td>Worst fall</td><td class="hi">&minus;28.5%</td><td>&minus;55.2%</td></tr>
+                <tr><td>Sharpe ratio</td><td>0.58</td><td>0.50</td></tr>
+                <tr><td>Trades</td><td>184</td><td>1</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="ly-float">
+          <div class="ly-float__row"><span>Verdict</span><span>Sample</span></div>
+          <div class="ly-float__title">Half the crash, two points less a year</div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section" id="process" style="--h: 2" data-moment="pinned-chapters" aria-labelledby="process-h">
+    <div class="wrap mo-pc__grid">
+      <div class="mo-pc__text">
+        <h2 id="process-h">How a backtest runs</h2>
+        <ol class="mo-pc__steps">
+          <li class="mo-pc__step">
+            <h3>Write the rules down</h3>
+            <p>Entry, exit, size and market, in plain English. I ask until nothing is left to guess.</p>
+            <figure class="mo-pc__visual">
+              <div class="rep" role="img" aria-label="The sample strategy written out: buy SPY when it closes above its 200-day average, sell when it closes below, costs 0.05 percent a side, data from 2000.">
+                <div class="rep__head"><b>Your strategy</b><span>As you sent it</span></div>
+                <div class="rep__body">
+                  <dl class="rep__rules">
+                    <dt>Buy</dt><dd>SPY closes above its 200-day average</dd>
+                    <dt>Sell</dt><dd>SPY closes below its 200-day average</dd>
+                    <dt>Trade at</dt><dd>The next day&rsquo;s close, never the same bar</dd>
+                    <dt>Costs</dt><dd>0.05% a side</dd>
+                    <dt>Data</dt><dd>Daily, January 2000 to November 2026</dd>
+                  </dl>
+                </div>
+              </div>
+            </figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Run them on real prices</h3>
+            <p>Every trade logged, costs taken off, nothing seen before its own date.</p>
+            <figure class="mo-pc__visual">
+              <div class="rep" role="img" aria-label="Signal log of the sample strategy from March 2025 to April 2026, including two switches within 16 days in March 2025.">
+                <div class="rep__head"><b>Signal log</b><span>Last 6 of 184</span></div>
+                <div class="rep__body">
+                  <table>
+                    <thead><tr><th>Date</th><th>Signal</th><th>SPY</th></tr></thead>
+                    <tbody>
+                      <tr><td>10 Mar 2025</td><td>Sell</td><td>549.78</td></tr>
+                      <tr><td>24 Mar 2025</td><td>Buy</td><td>564.71</td></tr>
+                      <tr><td>26 Mar 2025</td><td>Sell</td><td>559.31</td></tr>
+                      <tr><td>12 May 2025</td><td>Buy</td><td>573.48</td></tr>
+                      <tr><td>20 Mar 2026</td><td>Sell</td><td>645.30</td></tr>
+                      <tr><td>8 Apr 2026</td><td>Buy</td><td>672.60</td></tr>
+                    </tbody>
+                  </table>
+                  <p class="rep__note">Three signals in 16 days in March 2025: each one costs money.</p>
+                </div>
+              </div>
+            </figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Report the weak points</h3>
+            <p>Change one setting and watch the result. A rule that only works at one number is luck.</p>
+            <figure class="mo-pc__visual">
+              <div class="rep" role="img" aria-label="Sensitivity of the sample strategy to the average's length, from 100 to 300 days: return a year from 3.2 to 8.3 percent, worst fall from 22.9 to 51.6 percent.">
+                <div class="rep__head"><b>Change the 200</b><span>Same rule, other lengths</span></div>
+                <div class="rep__body">
+                  <table>
+                    <thead><tr><th>Average</th><th>Return a year</th><th>Worst fall</th></tr></thead>
+                    <tbody>
+                      <tr><td>100 days</td><td>4.3%</td><td>&minus;51.6%</td></tr>
+                      <tr><td>150 days</td><td>5.2%</td><td>&minus;34.2%</td></tr>
+                      <tr><td>200 days</td><td>6.2%</td><td>&minus;28.5%</td></tr>
+                      <tr><td>250 days</td><td>6.5%</td><td>&minus;23.9%</td></tr>
+                      <tr><td>300 days</td><td>8.3%</td><td>&minus;22.9%</td></tr>
+                    </tbody>
+                  </table>
+                  <p class="rep__note">At 100 days the crash protection is gone. That is the finding.</p>
+                </div>
+              </div>
+            </figure>
+          </li>
+        </ol>
+      </div>
+      <div class="mo-pc__visuals frame"></div>
+    </div>
+  </section>
+
+  <section class="section ground-surface" id="prices" style="--hm: 2" aria-labelledby="prices-h">
+    <div class="wrap grid grid--top">
+      <div class="span-6">
+        <div class="section-head">
+          <h2 id="prices-h">Prices</h2>
+          <p>You pay after I confirm your rules can be tested.</p>
+        </div>
+        <ul class="rows">
+          <li><span class="rows__name">Quick backtest<small>1 strategy, up to 10 years, costs included, 5 days</small></span><span class="rows__value">$99</span></li>
+          <li><span class="rows__name">Stress test<small>Plus other settings, split periods and a luck check, 7 days</small></span><span class="rows__value">$349</span></li>
+          <li><span class="rows__name">Full audit<small>Your whole testing process, written findings, through VALID</small></span><span class="rows__value">From $1,100</span></li>
+        </ul>
+        <p><a class="link" href="#request">Choose a package</a></p>
+      </div>
+      <div class="span-6 start-7">
+        <div class="rep" role="img" aria-label="Stress test sample: the 200-day rule earned 0.9 percent a year from 2000 to 2012 against 1.6 percent for buy and hold, and 11.4 percent from 2013 to 2026 against 14.7 percent.">
+          <div class="rep__head"><b>Stress test: two halves</b><span>200-day rule</span></div>
+          <div class="rep__body">
+            <div class="split-bars">
+              <p class="rep__note">2000 to 2012, return a year</p>
+              <div class="split-bars__row"><span>Your rule</span><span class="split-bars__bar" style="width:6%"></span><span>0.9%</span></div>
+              <div class="split-bars__row"><span>Buy and hold</span><span class="split-bars__bar h" style="width:11%"></span><span>1.6%</span></div>
+              <p class="rep__note">2013 to 2026, return a year</p>
+              <div class="split-bars__row"><span>Your rule</span><span class="split-bars__bar" style="width:77%"></span><span>11.4%</span></div>
+              <div class="split-bars__row"><span>Buy and hold</span><span class="split-bars__bar h" style="width:100%"></span><span>14.7%</span></div>
+            </div>
+            <p class="rep__note">Behind in both halves. The edge is smaller falls, not more return.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="request" style="--hm: 2" aria-labelledby="request-h">
+    <div class="wrap grid grid--top">
+      <div class="span-5">
+        <div class="section-head">
+          <h2 id="request-h">Send your strategy</h2>
+          <p>I reply within 2 days with questions or a quote.</p>
+        </div>
+        <div class="faq">
+          <div class="faq__item"><h3>Is the report financial advice?</h3><p>No. The report shows how your rules behaved on past prices. It never says what to buy or when.</p></div>
+          <div class="faq__item"><h3>Do I need Python or Pine Script?</h3><p>No. Plain English works. Code in either is welcome too.</p></div>
+          <div class="faq__item"><h3>Is my strategy kept private?</h3><p>Yes. Only the 3 free runs are shown on Instagram, with your consent and without your name or settings.</p></div>
+        </div>
+      </div>
+      <div class="span-6 start-7">
+        <form class="form" action="https://formsubmit.co/jwim1101@gmail.com" method="post" data-endpoint="https://formsubmit.co/ajax/jwim1101@gmail.com" data-sent="Your strategy is in. I reply within 2 days." novalidate>
+          <input type="hidden" name="_subject" value="New backtest request">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="field"><label for="f-name">Name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="f-name-err">
+            <p class="field__error" id="f-name-err" hidden>Write the name to reply to.</p></div>
+          <div class="field"><label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-describedby="f-email-err">
+            <p class="field__error" id="f-email-err" hidden>Write an email address with an @, like name@example.com.</p></div>
+          <div class="field"><label for="f-market">Market and years</label>
+            <input id="f-market" name="market" type="text" autocomplete="off" aria-describedby="f-market-err" placeholder="BTC daily, 2018 to now…">
+            <p class="field__error" id="f-market-err" hidden>Write the market you trade.</p></div>
+          <div class="field"><label for="f-plan">Package</label>
+            <select id="f-plan" name="package"><option>Not sure yet</option><option>Quick backtest, $99</option><option>Stress test, $349</option><option>Full audit</option></select></div>
+          <div class="field"><label for="f-source">Where you found me</label>
+            <input id="f-source" name="source" type="text" autocomplete="off" placeholder="Instagram reel about…"></div>
+          <div class="field field--full"><label for="f-rules">Your rules</label>
+            <textarea id="f-rules" name="rules" rows="4" autocomplete="off" required aria-describedby="f-rules-err" placeholder="Buy when… sell when… position size…"></textarea>
+            <p class="field__error" id="f-rules-err" hidden>Write the entry and exit rules, even roughly.</p></div>
+          <div class="btn-row"><button class="btn btn--primary" type="submit">Send your strategy</button></div>
+          <p class="form__status" role="status" data-form-status></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">Send your strategy</h2>
+        <p>The first 3 requests run free. After that, from $99.</p>
+      </div>
+      <a class="btn btn--primary btn--xl btn--wide" href="#request">Send your strategy<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-6 stack-4">
+          <a class="nav__logo" href="#top"><span class="mark" data-mark="stack" aria-hidden="true"></span>Jay Kim</a>
+          <p class="footer__lede">Backtests and stress tests of trading rules, from Seoul.</p>
+        </div>
+        <div class="span-3 start-7 footer__col"><h3>Service</h3><ul><li><a href="#process">Process</a></li><li><a href="#prices">Prices</a></li></ul></div>
+        <div class="span-3 footer__col"><h3>Contact</h3><ul><li><a href="#request">Request form</a></li><li><a href="https://orcajae.github.io/valid-framework/">VALID audits</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Jay Kim</span>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <span>Research only. Past results do not predict future returns.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<nav class="actionbar" aria-label="Quick actions">
+  <a class="btn btn--primary" href="#request">Send your strategy</a>
+</nav>
+
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
+</body>
+</html>
