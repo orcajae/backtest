@@ -67,14 +67,11 @@ body > .footer { padding-block: var(--s-6); }
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_next" value="https://orcajae.github.io/backtest/thanks.html">
+          <input type="hidden" name="source" id="c-source" value="direct">
           <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="field field--full"><label for="c-email">Email</label>
             <input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-describedby="c-email-err">
             <p class="field__error" id="c-email-err" hidden>Write an email address with an @, like name@example.com.</p></div>
-          <div class="field field--full"><label for="c-video">Which video brought you here?</label>
-            <input id="c-video" name="video" type="text" autocomplete="off" placeholder="The reel about…"></div>
-          <div class="field field--full"><label for="c-rules">A strategy you want checked (optional)</label>
-            <textarea id="c-rules" name="strategy" rows="3" autocomplete="off" placeholder="Buy when… sell when…"></textarea></div>
           <div class="btn-row"><button class="btn btn--primary" type="submit">Get the checklist</button></div>
           <p class="note">The PDF opens on the next page. I may email you once about it, and never share your address. <a class="link" href="privacy.html">Privacy</a>.</p>
           <p class="form__status" role="status" data-form-status></p>
@@ -108,6 +105,7 @@ body > .footer { padding-block: var(--s-6); }
     </div>
   </div>
 </footer>
+<script>try{var s=new URLSearchParams(location.search).get("src");if(s)document.getElementById("c-source").value=s.slice(0,40)}catch(e){}</script>
 <script type="module" src="assets/system.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 </body>
