@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-type="service" data-radius="sharp" data-buttons="arrow" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>10 ways a backtest lies: free checklist</title>
+<meta name="description" content="A free two-page checklist: ten checks to run before you trust any backtest, with examples from a real 26-year test on SPY.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="10 ways a backtest lies: free checklist">
+<meta property="og:description" content="Ten checks to run before you put money behind a trading rule. Free PDF.">
+<meta property="og:image" content="share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f8f8f8">
+<meta name="site-kind" content="other">
+<meta name="page-type" content="service">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400..700&family=Libre+Franklin:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<style>
+:root {
+  --p-bg: #f8f8f8; --p-surface: #eeeeee; --p-ink: #0a0a0a; --p-muted: #6a6a6a;
+  --p-accent: #1f6b3a; --p-accent-ink: #ffffff; --p-action: #1f6b3a; --p-action-ink: #ffffff;
+  --p-inv-bg: #0a0a0a; --p-inv-surface: #171717; --p-inv-ink: #f8f8f8; --p-inv-muted: #939393;
+  --p-inv-accent: #1f6b3a; --p-inv-accent-ink: #ffffff; --p-inv-action: #1f6b3a; --p-inv-action-ink: #ffffff;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-text: "Libre Franklin", system-ui, sans-serif;
+  --display-weight: 400; --display-tracking: -0.02em; --display-tracking-xl: -0.026em;
+}
+.nav__actions { margin-left: auto; }
+main > .hero { height: auto; min-height: 0; padding-bottom: var(--section); }
+main > .hero > .wrap { height: auto; }
+body > .footer { padding-block: var(--s-6); }
+@media (min-width: 1024px) { .lm-form { grid-row: 1 / span 2; } .lm-list { grid-row: 2; } }
+#hero-h + .hero__lead { margin-top: var(--s-5); max-width: 560px; }
+.checks { list-style: none; margin: var(--s-6) 0 0; padding: 0; border-top: 1px solid var(--line); counter-reset: n; }
+.checks li { counter-increment: n; display: grid; grid-template-columns: 32px 1fr; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.checks li::before { content: counter(n, decimal-leading-zero); color: var(--muted); font-variant-numeric: tabular-nums; }
+.form .note { color: var(--muted); font-size: var(--t-small); margin: 0; }
+</style>
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="index.html"><span class="mark" data-mark="stack" aria-hidden="true"></span>Jay Kim</a>
+    <div class="nav__actions">
+      <a class="btn btn--quiet" href="index.html">Backtest service</a>
+    </div>
+  </div>
+</header>
+<main id="top">
+  <section class="hero" data-enter aria-labelledby="hero-h">
+    <div class="wrap grid grid--top">
+      <div class="span-6">
+        <h1 id="hero-h">10 ways a backtest lies</h1>
+        <p class="hero__lead">A free two-page checklist. Run it before you put money behind any trading rule, whether you wrote it, copied it or asked an AI to build it. Every check comes with a real example from a 26-year test on SPY.</p>
+      </div>
+      <div class="span-5 start-8 lm-form">
+        <form class="form" action="https://formsubmit.co/9f7fa06d0bd5e95605800364f44f8fea" method="post" novalidate>
+          <input type="hidden" name="_subject" value="Checklist download">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://orcajae.github.io/backtest/thanks.html">
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="field field--full"><label for="c-email">Email</label>
+            <input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-describedby="c-email-err">
+            <p class="field__error" id="c-email-err" hidden>Write an email address with an @, like name@example.com.</p></div>
+          <div class="field field--full"><label for="c-video">Which video brought you here?</label>
+            <input id="c-video" name="video" type="text" autocomplete="off" placeholder="The reel about…"></div>
+          <div class="field field--full"><label for="c-rules">A strategy you want checked (optional)</label>
+            <textarea id="c-rules" name="strategy" rows="3" autocomplete="off" placeholder="Buy when… sell when…"></textarea></div>
+          <div class="btn-row"><button class="btn btn--primary" type="submit">Get the checklist</button></div>
+          <p class="note">The PDF opens on the next page. I may email you once about it, and never share your address. <a class="link" href="privacy.html">Privacy</a>.</p>
+          <p class="form__status" role="status" data-form-status></p>
+        </form>
+      </div>
+      <div class="span-6 lm-list">
+        <ol class="checks">
+          <li>Rules written down before the first result</li>
+          <li>No peeking at the future</li>
+          <li>Trading costs included, then doubled</li>
+          <li>Compared with simply holding the market</li>
+          <li>Clean data: splits, dividends, dead tickers</li>
+          <li>Nearby settings still work</li>
+          <li>Both halves of the history agree</li>
+          <li>Enough trades to mean something</li>
+          <li>How deep, and how long, it falls</li>
+          <li>Tested on data the settings never saw</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__legal">
+      <span>&copy; 2026 Jay Kim</span>
+      <a href="index.html">Backtest service</a>
+      <a href="sample-report.html">Sample report</a>
+      <span>Research only. Past results do not predict future returns.</span>
+    </div>
+  </div>
+</footer>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+</body>
+</html>

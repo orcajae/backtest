@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-type="service" data-radius="sharp" data-buttons="arrow" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your checklist is ready</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f8f8f8">
+<meta name="site-kind" content="other">
+<meta name="page-type" content="service">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400..700&family=Libre+Franklin:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<style>
+:root {
+  --p-bg: #f8f8f8; --p-surface: #eeeeee; --p-ink: #0a0a0a; --p-muted: #6a6a6a;
+  --p-accent: #1f6b3a; --p-accent-ink: #ffffff; --p-action: #1f6b3a; --p-action-ink: #ffffff;
+  --p-inv-bg: #0a0a0a; --p-inv-surface: #171717; --p-inv-ink: #f8f8f8; --p-inv-muted: #939393;
+  --p-inv-accent: #1f6b3a; --p-inv-accent-ink: #ffffff; --p-inv-action: #1f6b3a; --p-inv-action-ink: #ffffff;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-text: "Libre Franklin", system-ui, sans-serif;
+  --display-weight: 400; --display-tracking: -0.02em; --display-tracking-xl: -0.026em;
+}
+.nav__actions { margin-left: auto; }
+main > .hero { height: auto; min-height: 0; padding-bottom: var(--section); }
+main > .hero > .wrap { height: auto; }
+body > .footer { padding-block: var(--s-6); }
+main > .hero > .wrap { display: block; }
+#hero-h + .hero__lead { margin-top: var(--s-5); max-width: 560px; }
+.offer { margin-top: var(--s-7); max-width: 760px; }
+.offer .rows { margin-top: var(--s-5); }
+.rows .rows__name small { display: block; font-weight: 400; color: var(--muted); font-size: var(--t-small); }
+.offer ul.terms { margin: var(--s-5) 0 0; padding-left: 20px; }
+.offer ul.terms li { margin: 6px 0; }
+</style>
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="index.html"><span class="mark" data-mark="stack" aria-hidden="true"></span>Jay Kim</a>
+    <div class="nav__actions">
+      <a class="btn btn--quiet" href="index.html">Backtest service</a>
+    </div>
+  </div>
+</header>
+<main id="top">
+  <section class="hero" data-enter aria-labelledby="hero-h">
+    <div class="wrap">
+      <h1 id="hero-h">Your checklist is ready</h1>
+      <p class="hero__lead">Two pages, ten checks. Keep it next to your next backtest.</p>
+      <div class="btn-row" style="margin-top: var(--s-6)">
+        <a class="btn btn--primary btn--xl" href="backtest-checklist.pdf" download>Download the PDF</a>
+        <a class="btn btn--quiet" href="backtest-checklist.pdf">Open in the browser</a>
+      </div>
+
+      <div class="offer" aria-labelledby="offer-h">
+        <div class="section-head">
+          <h2 id="offer-h">Want the ten checks run on your strategy?</h2>
+          <p>Checks 2, 6 and 10 need code and clean data to run properly. Send your rules in plain English and I run all ten.</p>
+        </div>
+        <ul class="rows">
+          <li><span class="rows__name">Quick backtest<small>1 strategy, up to 10 years, costs included. First finding by email in 48 hours, full report in 5 days.</small></span><span class="rows__value">$99</span></li>
+          <li><span class="rows__name">Stress test<small>Adds other settings, split periods, walk-forward and a luck check. Your $99 is credited if you upgrade.</small></span><span class="rows__value">$349</span></li>
+        </ul>
+        <ul class="terms">
+          <li>You pay only after I confirm your rules can be tested.</li>
+          <li>My first 5 paid reports carry a full refund if you are not satisfied. No questions.</li>
+          <li>The report shows how your rules behaved on past prices. It never tells you what to buy.</li>
+        </ul>
+        <div class="btn-row" style="margin-top: var(--s-6)">
+          <a class="btn btn--primary" href="index.html#request">Send your strategy<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+          <a class="btn btn--quiet" href="sample-report.html">See a sample report</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__legal">
+      <span>&copy; 2026 Jay Kim</span>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <span>Research only. Past results do not predict future returns.</span>
+    </div>
+  </div>
+</footer>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+</body>
+</html>
