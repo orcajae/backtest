@@ -13,7 +13,17 @@
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-read]"); if (!b) return;
     var r = readoutFor(b); if (r) r.textContent = b.getAttribute("data-read");
+    if (b.classList.contains("zc__ev")) {   // signal/fill list under the zoom chart: one chosen event, marked on the chart
+      var fig = b.closest("figure");
+      fig.querySelectorAll(".zc__ev").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      fig.querySelectorAll(".zc__sig, .zc__fill").forEach(function (m) { m.classList.toggle("is-on", m.getAttribute("data-ev") === b.getAttribute("data-ev")); });
+    }
   });
+  // tables wider than their box get a "scroll sideways" hint (the hint is in the HTML, hidden until needed)
+  function hints() {
+    document.querySelectorAll(".scroll").forEach(function (s) { s.classList.toggle("is-scrollable", s.scrollWidth > s.clientWidth + 1); });
+  }
+  hints(); window.addEventListener("resize", hints);
   document.addEventListener("focusin", function (e) {
     var b = e.target.closest && e.target.closest("[data-read]"); if (!b) return;
     var r = readoutFor(b); if (r) r.textContent = b.getAttribute("data-read");

@@ -290,16 +290,33 @@ function forms() {
       const endpoint = (form.dataset.endpoint || '').trim();
       if (!/^https?:\/\//.test(endpoint) && !endpoint.startsWith('/')) return;
       e.preventDefault();
+      if (form.dataset.busy === '1') return;          // a second click while one request is open sends nothing
+      form.dataset.busy = '1';
       const button = form.querySelector('[type="submit"]');
       const wait = setTimeout(() => say(form.dataset.sending || 'Sending'), 300);
       if (button) { button.disabled = true; button.setAttribute('aria-busy', 'true'); }
+      const ctrl = 'AbortController' in window ? new AbortController() : null;
+      const limit = setTimeout(() => ctrl && ctrl.abort(), 20000);   // a finite wait: the form comes back after 20 s
       try {
-        const res = await fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        const res = await fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }, signal: ctrl ? ctrl.signal : undefined });
         if (!res.ok) throw new Error(String(res.status));
-        clearTimeout(wait); form.reset(); say(form.dataset.sent || 'Sent.');
-      } catch {
-        clearTimeout(wait); say(form.dataset.failed || 'Not sent: the connection failed. Your words are still here; try again.');
+        // Sent only when the service says so in its reply. FormSubmit's AJAX reply carries `success`
+        // ("true"/true when accepted); a reply without it, a false value or a body that is not JSON
+        // is not shown as sent, and the words stay in the form.
+        let body = null;
+        try { body = await res.json(); } catch { body = null; }
+        const ok = !!body && (body.success === true || body.success === 'true');
+        clearTimeout(wait);
+        if (ok) { form.reset(); say(form.dataset.sent || 'Sent.'); }
+        else { say(form.dataset.unconfirmed || 'Not confirmed as sent. Your words are still here; try again.'); }
+      } catch (err) {
+        clearTimeout(wait);
+        say(err && err.name === 'AbortError'
+          ? (form.dataset.timeout || 'No answer yet. Your words are still here; try again.')
+          : (form.dataset.failed || 'Not sent: the connection failed. Your words are still here; try again.'));
       } finally {
+        clearTimeout(limit);
+        form.dataset.busy = '';
         if (button) { button.disabled = false; button.removeAttribute('aria-busy'); }
       }
     });
