@@ -290,6 +290,7 @@ function forms() {
       const endpoint = (form.dataset.endpoint || '').trim();
       if (!/^https?:\/\//.test(endpoint) && !endpoint.startsWith('/')) return;
       e.preventDefault();
+      if (form.dataset.provider === 'web3forms') { await sendWeb3forms(form, endpoint, say); return; }
       if (form.dataset.busy === '1') return;          // a second click while one request is open sends nothing
       form.dataset.busy = '1';
       const button = form.querySelector('[type="submit"]');
@@ -321,6 +322,45 @@ function forms() {
       }
     });
   });
+}
+
+/* ------------------------------------------------------------------ web3forms
+   The backtest request form (data-provider="web3forms") only; other forms keep their own path.
+   Contract (docs.web3forms.com, api-reference): POST JSON to /submit; accepted = HTTP 200 and
+   success === true; 400/429 = {success:false, message}; anything else is not a confirmation.
+   Words stay in the form unless the request was accepted. After an unconfirmed send, the next
+   press only warns that the request may already have arrived; the press after that sends again. */
+const W3F_OK = "Request received. I'll reply by email.";
+const W3F_REFUSED = "This request wasn't accepted: ";
+const W3F_UNSURE = "We couldn't confirm that your request arrived. It may already have been received, so please don't resend the same request right away.";
+const W3F_RESEND = 'Your last request may already have arrived. To send it again anyway, press the button once more.';
+async function sendWeb3forms(form, endpoint, say) {
+  if (form.dataset.busy === '1') return;            // one request at a time
+  if (form.dataset.unsure === '1' && form.dataset.warned !== '1') { form.dataset.warned = '1'; say(W3F_RESEND); return; }
+  form.dataset.busy = '1'; form.dataset.warned = '';
+  const button = form.querySelector('[type="submit"]');
+  const wait = setTimeout(() => say(form.dataset.sending || 'Sending'), 300);
+  if (button) { button.disabled = true; button.setAttribute('aria-busy', 'true'); }
+  const ctrl = 'AbortController' in window ? new AbortController() : null;
+  const limit = setTimeout(() => ctrl && ctrl.abort(), 20000);   // 20 s, then the form comes back
+  let msg = W3F_UNSURE, accepted = false;
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(form))), signal: ctrl ? ctrl.signal : undefined });
+    let body = null;
+    try { body = await res.json(); } catch { body = null; }
+    if (res.status === 200 && body && body.success === true) { accepted = true; msg = W3F_OK; }
+    else if ((res.status === 400 || res.status === 429) && body && body.success === false) {
+      msg = W3F_REFUSED + (typeof body.message === 'string' && body.message ? body.message : 'no reason given.');
+    }
+  } catch { /* timeout or network: not a confirmation */ }
+  clearTimeout(wait); clearTimeout(limit);
+  if (accepted) { form.reset(); form.dataset.unsure = ''; }
+  else if (msg === W3F_UNSURE) { form.dataset.unsure = '1'; }
+  say(msg);
+  form.dataset.busy = '';
+  if (button) { button.disabled = false; button.removeAttribute('aria-busy'); }
 }
 
 /* ------------------------------------------------------------------ peek

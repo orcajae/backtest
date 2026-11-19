@@ -371,10 +371,10 @@
         </div>
       </div>
       <div class="span-6 start-7">
-        <form class="form" action="https://formsubmit.co/9f7fa06d0bd5e95605800364f44f8fea" method="post" data-sent="Your strategy is in. I reply within 2 days." data-unconfirmed="Not confirmed as sent. Your words are still here; try again, or email the rules instead." data-timeout="No answer from the form service yet. Your words are still here; try again." novalidate>
-          <input type="hidden" name="_subject" value="New backtest request">
-          <input type="hidden" name="_template" value="table">
-          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <form class="form" action="https://api.web3forms.com/submit" method="post" data-endpoint="https://api.web3forms.com/submit" data-provider="web3forms" novalidate>
+          <input type="hidden" name="access_key" value="71ce78cd-c08b-4ecf-9cf9-8450200a7e96">
+          <input type="hidden" name="subject" value="New backtest request">
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="field"><label for="f-name">Name</label>
             <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="f-name-err">
             <p class="field__error" id="f-name-err" hidden>Write the name to reply to.</p></div>
