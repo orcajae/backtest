@@ -39,23 +39,22 @@ dl{margin:0} dt{font-weight:500;margin-top:16px} dd{margin:0;color:var(--ink)}
 <h2>2. Data</h2>
 <dl>
 <dt>Stocks and ETFs</dt><dd>Daily prices adjusted for splits and dividends, from public sources such as Yahoo Finance.</dd>
-<dt>Crypto</dt><dd>Public exchange price history for spot markets.</dd>
 <dt>Your data</dt><dd>If you send your own data, it is used as given and named in the report.</dd>
 </dl>
 
 <h2>3. Timing</h2>
-<p>A signal from a bar's close trades at the open of the next trading session (the next day the exchange is open), unless your rules name another time. Nothing in a calculation uses a price from after its own date. This one rule removes the most common reason a backtest looks better than reality.</p>
+<p>A signal from a bar's close trades at the open of the next trading session (the next day the exchange is open), or at that session&rsquo;s close if your rules say so. Nothing in a calculation uses a price from after its own date. This one rule removes the most common reason a backtest looks better than reality.</p>
 
 <h2>4. Costs</h2>
-<p>Your broker's costs if you give them. Otherwise 0.05% a side for US stocks and ETFs and 0.10% a side for crypto spot, stated in the report. The report also shows how much the result changes if costs double.</p>
+<p>Your broker's costs if you give them. Otherwise 0.05% a side for US stocks and ETFs, stated in the report. The report also shows how much the result changes if costs double.</p>
 
 <h2>5. What a quick backtest reports</h2>
 <p>Return a year, worst fall from a peak, Sharpe ratio, longest time below a previous peak, number of trades, time in the market, and the same figures for simply holding the market over the same dates.</p>
 
 <h2>6. What a stress test adds</h2>
 <dl>
-<dt>Other settings</dt><dd>Every number in your rules moved up and down. A result that holds only at one value is reported as fragile.</dd>
-<dt>Split periods</dt><dd>The dates cut in two or more parts, so one lucky stretch cannot carry the whole result.</dd>
+<dt>Other settings</dt><dd>Every number in your rules moved up and down on a grid fixed before any run. The report shows the result at each setting in a table and states the range across them; it does not pick a best setting.</dd>
+<dt>Split periods</dt><dd>The dates cut in two parts (at the midpoint, unless another date is fixed before the run), so one lucky stretch cannot carry the whole result.</dd>
 <dt>Walk-forward</dt><dd>Settings chosen on earlier data, then tested on later data they never saw.</dd>
 <dt>Luck check</dt><dd>Two parts. A resampling band shows how uncertain the result itself is. Then the rule&rsquo;s stretches in the market and in cash are put in random order many times, keeping their lengths, the time in the market and the number of trades, to see how often random timing of the same shape does as well.</dd>
 <dt>Market regimes</dt><dd>Results in rising, falling and sideways markets, shown separately. Each day is grouped using only prices known before it; the report states the definition.</dd>

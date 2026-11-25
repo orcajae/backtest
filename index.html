@@ -7,7 +7,7 @@
 <meta name="description" content="Send your trading rules in plain English. A quant engineer codes them, tests them on real price history with costs, and shows where they break. From $99.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Jay Kim: backtests for your own trading rules">
-<meta property="og:description" content="Your rules, coded and run on real price history with costs. First finding in 48 hours, from $99.">
+<meta property="og:description" content="Your rules, coded and run on real price history with costs. First finding within 48 hours of payment (business days), from $99.">
 <meta property="og:image" content="https://orcajae.github.io/backtest/share.jpg">
 <meta property="og:url" content="https://orcajae.github.io/backtest/">
 <meta property="og:site_name" content="Jay Kim">
@@ -241,7 +241,7 @@
       <div class="hero__text span-5">
         <p class="hero__kicker"><span class="dot" aria-hidden="true"></span>First 3 requests run free</p>
         <h1 id="hero-h">Backtests for your own trading rules</h1>
-        <p class="hero__lead">Write your strategy in plain English. I code it, run it on real price history with trading costs, and show where it breaks. From $99, first finding in 48 hours.</p>
+        <p class="hero__lead">Write your strategy in plain English. I code it, run it on real price history with trading costs, and show where it breaks. From $99, first finding within 48 hours of payment (business days).</p>
         <div class="btn-row">
           <a class="btn btn--primary" href="#request">Send your strategy<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
           <a class="btn btn--secondary" href="sample-report.html">See a sample report</a>
@@ -338,8 +338,8 @@
           <p>You pay after I confirm your rules can be tested. My first 5 paid reports carry a full refund if you are not satisfied.</p>
         </div>
         <ul class="rows">
-          <li><span class="rows__name">Quick backtest<small>7 of the 10 checks. 1 strategy, up to 10 years, costs included. First finding in 48 hours, full report in 5 days</small></span><span class="rows__value">$99</span></li>
-          <li><span class="rows__name">Stress test<small>All 10 checks: adds other settings, split periods, walk-forward, a luck check and market regimes. 7 days, Quick fee credited</small></span><span class="rows__value">$349</span></li>
+          <li><span class="rows__name">Quick backtest<small>7 of the 10 checks. 1 strategy, up to 10 years, costs included. First finding in 48 hours, full report in 5 days, counted on business days from payment</small></span><span class="rows__value">$99</span></li>
+          <li><span class="rows__name">Stress test<small>All 10 checks: adds other settings, split periods, walk-forward, a luck check and market regimes. 7 business days from payment, Quick fee credited</small></span><span class="rows__value">$349</span></li>
           <li><span class="rows__name">Full audit<small>Your whole testing process, written findings, through VALID</small></span><span class="rows__value">From $1,100</span></li>
         </ul>
         <p class="prices__cta"><a class="link" href="#request">Choose a package</a></p>
@@ -368,7 +368,7 @@
         <div class="faq">
           <div class="faq__item"><h3>Is the report financial advice?</h3><p>No. The report shows how your rules behaved on past prices. It never says what to buy or when.</p></div>
           <div class="faq__item"><h3>Who runs the backtests?</h3><p>Jay Kim, an industrial engineer (UNIST) and author of <a class="faq__inline" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6508779">a working paper on validating trading models</a>.</p><p class="faq__more"><a class="link" href="methodology.html">Read the method</a></p></div>
-          <div class="faq__item"><h3>What can be tested?</h3><p>Any strategy with written rules: when to enter, when to exit, how much. If it can't be written down, it can't be tested yet.</p></div>
+          <div class="faq__item"><h3>What can be tested?</h3><p>Right now: one stock or ETF on daily prices, either fully in the market or fully in cash, using one of two rule types. 1) In the market while the price is above its N-day moving average, in cash below it. 2) In the market while a faster moving average is above a slower one. Signals are taken at the close and filled at the next session&rsquo;s open (or close, if your rules say so). Any other rule is quoted first and run only after you agree to the quote.</p></div>
           <div class="faq__item"><h3>Do I need Python or Pine Script?</h3><p>No. Plain English works. Code in either is welcome too.</p></div>
           <div class="faq__item"><h3>Is my strategy kept private?</h3><p>Yes. Only the 3 free runs are shown on Instagram, with your consent and without your name or settings.</p></div>
         </div>
@@ -385,18 +385,20 @@
             <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" required aria-describedby="f-email-err">
             <p class="field__error" id="f-email-err" hidden>Write an email address with an @, like name@example.com.</p></div>
           <div class="field"><label for="f-market">Market and years <span class="field__opt">(optional)</span></label>
-            <input id="f-market" name="market" type="text" autocomplete="off" aria-describedby="f-market-err" placeholder="BTC daily, 2018 to now…">
+            <input id="f-market" name="market" type="text" autocomplete="off" aria-describedby="f-market-err" placeholder="SPY daily, 2010 to now…">
             <p class="field__error" id="f-market-err" hidden>Write the market you trade.</p></div>
           <div class="field"><label for="f-plan">Package</label>
             <select id="f-plan" name="package"><option>Not sure yet</option><option>Quick backtest, $99</option><option>Stress test, $349</option><option>Full audit</option></select></div>
           <div class="field field--full"><label for="f-source">Where you found me <span class="field__opt">(optional)</span></label>
             <input id="f-source" name="source" type="text" autocomplete="off" placeholder="Instagram reel about…"></div>
           <div class="field field--full"><label for="f-rules">Your rules</label>
-            <textarea id="f-rules" name="rules" rows="4" autocomplete="off" required aria-describedby="f-rules-err" placeholder="Buy when… sell when… position size…"></textarea>
+            <textarea id="f-rules" name="rules" rows="4" autocomplete="off" required aria-describedby="f-rules-err" placeholder="Buy when… sell when…"></textarea>
             <p class="field__error" id="f-rules-err" hidden>Write the entry and exit rules, even roughly.</p></div>
           <div class="btn-row"><button class="btn btn--primary" type="submit">Send your strategy</button></div>
           <p class="form__status" role="status" data-form-status></p>
           <p class="form__note">Sending this asks for a reply; it is not an order or a payment. How your details are used: <a href="privacy.html">Privacy</a>.</p>
+          <p class="form__note" id="us-note" hidden><b>Based in the US?</b> A report shows how the rules you wrote behaved on past prices, and nothing more. It is not a recommendation to buy or sell anything, and it is not investment advice. I do not give advice tailored to your situation.</p>
+          <script>(function(){try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";if(/^America\/(New_York|Detroit|Kentucky\/|Indiana\/|Chicago|Menominee|North_Dakota\/|Denver|Boise|Phoenix|Los_Angeles|Anchorage|Juneau|Sitka|Metlakatla|Yakutat|Nome|Adak|Indianapolis|Fort_Wayne|Louisville|Knox_IN)|^Pacific\/Honolulu$|^US\//.test(z)){var n=document.getElementById("us-note");if(n)n.hidden=false}}catch(e){}})();</script>
         </form>
       </div>
     </div>
